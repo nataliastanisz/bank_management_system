@@ -1,10 +1,8 @@
 import streamlit as st
 from app import BankSystem # import logic
 
-# page config
-st.set_page_config(page_title="Modern Bank", page_icon="💰")
+st.set_page_config(page_title="Modern Bank")
 
-# init bank
 if 'bank' not in st.session_state:
     st.session_state.bank = BankSystem()
 
@@ -12,7 +10,6 @@ bank = st.session_state.bank
 
 st.title("Modern Banking System")
 
-# sidebar menu
 menu = ["Home", "Open Account", "Deposit", "Withdraw", "Check Balance"]
 choice = st.sidebar.selectbox("Menu", menu)
 
@@ -26,7 +23,6 @@ elif choice == "Open Account":
     pin = st.text_input("Set 4-digit PIN", type="password")
     deposit = st.number_input("Initial Deposit ($)", min_value=0.0)
     
-    # create action
     if st.button("Create Account"):
         if name in bank.accounts:
             st.error("Account already exists!")
@@ -40,7 +36,6 @@ elif choice == "Deposit":
     name = st.text_input("Full Name")
     amount = st.number_input("Amount to deposit ($)", min_value=0.0)
     
-    # deposit action
     if st.button("Confirm Deposit"):
         if name in bank.accounts:
             bank.accounts[name]["balance"] += amount
@@ -55,7 +50,6 @@ elif choice == "Withdraw":
     pin = st.text_input("Enter PIN", type="password")
     amount = st.number_input("Amount to withdraw ($)", min_value=0.0)
     
-    # withdraw action
     if st.button("Confirm Withdrawal"):
         if name in bank.accounts:
             if bank.accounts[name]["pin"] == pin:
@@ -75,7 +69,6 @@ elif choice == "Check Balance":
     name = st.text_input("Full Name")
     pin = st.text_input("Enter PIN", type="password")
     
-    # check action
     if st.button("Show Balance"):
         if name in bank.accounts and bank.accounts[name]["pin"] == pin:
             st.info(f"Account: {name} | Balance: ${bank.accounts[name]['balance']}")
